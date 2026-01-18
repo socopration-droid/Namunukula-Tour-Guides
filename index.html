@@ -127,16 +127,15 @@
         }
 
         /* =========================================
-           HOME SECTION (NEW DESIGN)
+           HOME SECTION
            ========================================= */
         #home {
             padding: 0;
-            /* User Image URL - No Blur */
             background: url('https://z-cdn-media.chatglm.cn/files/e3f61d37-e703-4768-8222-964cae9db18e.png?auth_key=1868757152-76fea658967c4d75abb40b4b028e9be9-0-637c45627c3bfc6df218f404da1ff279');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            height: 100vh; /* Full screen for hero */
+            height: 100vh;
             display: none;
         }
         
@@ -188,7 +187,7 @@
         .hero p {
             font-size: 1.3rem;
             color: #f0f0f0;
-            margin-bottom: 40px;
+            margin-bottom: 0;
             font-weight: 400;
             text-shadow: 0 2px 10px rgba(0,0,0,0.9);
             max-width: 750px;
@@ -196,76 +195,76 @@
             margin-right: auto;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 16px 45px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            border: none;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            border: 2px solid var(--primary);
-        }
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            border-color: var(--primary-dark);
-            transform: translateY(-3px);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-        .btn-outline:hover {
-            background-color: white;
-            color: var(--text-dark);
-            transform: translateY(-3px);
-        }
-
         /* =========================================
-           HOME INTRO SECTION (FIXED ARRANGEMENT)
+           ABOUT SECTION
            ========================================= */
-        .home-intro {
+        #about {
             background-color: var(--white);
-            padding: 80px 20px;
-            text-align: center;
         }
 
-        /* Limiting width ensures text stays in a nice column */
-        .home-intro .container {
-            max-width: 800px; 
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
         }
 
-        .home-intro h2 {
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            border-radius: 10px;
+            box-shadow: 20px 20px 0 var(--primary-dark);
+            width: 100%;
+            height: auto;
+        }
+
+        .about-content h2 {
             font-size: 2.5rem;
+            color: var(--primary-dark);
             margin-bottom: 20px;
+        }
+
+        .about-content h4 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .about-content p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .features-list {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
             color: var(--primary-dark);
         }
 
-        .home-intro p {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            line-height: 1.8; /* Better spacing between lines */
-            margin-bottom: 30px;
+        .feature-item i {
+            color: var(--accent);
+            background: rgba(255, 165, 0, 0.1);
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 0.9rem;
         }
 
         /* =========================================
-           TOURS SECTION (PREVIOUS DESIGN)
+           TOURS SECTION
            ========================================= */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
@@ -286,17 +285,80 @@
         .tour-img { height: 200px; width: 100%; object-fit: cover; }
         .tour-info { padding: 20px; }
         .tour-info h3 { margin-bottom: 10px; color: var(--primary-dark); }
-        .tour-meta { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px; }
-        .tour-price { font-weight: 700; color: var(--accent); font-size: 1.1rem; }
+        .tour-meta { 
+            display: flex; 
+            font-size: 0.9rem; 
+            color: var(--text-light); 
+            margin-bottom: 15px; 
+            gap: 10px; 
+        }
 
         /* Tour Detail View */
         .tour-detail { background: var(--white); padding: 30px; border-radius: 10px; box-shadow: var(--shadow); display: none; }
         .tour-detail.active { display: block; animation: fadeIn 0.5s ease; }
         .tour-detail-content { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .booking-form { margin-top: 30px; background: var(--bg-light); padding: 20px; border-radius: 8px; }
 
         /* =========================================
-           GALLERY SECTION (PREVIOUS DESIGN)
+           BEAUTIFUL BUTTON STYLES
+           ========================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none;
+            outline: none;
+        }
+
+        /* Beautiful Gradient Primary Button (View Details, Submit Review) */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(46, 139, 87, 0.5);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        }
+
+        /* Beautiful Outline Button (Back to Tours) */
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+            width: auto; /* Allow width to adapt */
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateX(-5px); /* Slide effect for back button */
+            box-shadow: 0 4px 15px rgba(46, 139, 87, 0.2);
+        }
+        
+        .btn i {
+            margin-left: 8px;
+            font-size: 0.9em;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Icon animation for buttons */
+        .btn-primary:hover i { transform: translateX(3px); }
+        .btn-outline:hover i { transform: translateX(-3px); }
+
+        /* =========================================
+           GALLERY SECTION
            ========================================= */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
         .gallery-item { position: relative; height: 250px; overflow: hidden; border-radius: 8px; cursor: pointer; }
@@ -310,7 +372,7 @@
         .gallery-item:hover .gallery-overlay { opacity: 1; }
 
         /* =========================================
-           FEEDBACK SECTION (PREVIOUS DESIGN)
+           FEEDBACK SECTION
            ========================================= */
         .feedback-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .feedback-form { background: var(--white); padding: 30px; border-radius: 10px; box-shadow: var(--shadow); }
@@ -338,7 +400,7 @@
         .feedback-tour { font-size: 0.85rem; color: var(--text-light); background: #eee; padding: 2px 8px; border-radius: 4px; }
 
         /* =========================================
-           CONTACT SECTION (PREVIOUS DESIGN)
+           CONTACT SECTION
            ========================================= */
         .contact-wrapper {
             display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; background: var(--white);
@@ -389,8 +451,11 @@
             nav ul { flex-direction: column; text-align: center; }
             .hero h1 { font-size: 2.8rem; }
             .hero p { font-size: 1.1rem; }
-            .btn-group { flex-direction: column; }
-            .btn { width: 100%; }
+            
+            .about-container { grid-template-columns: 1fr; }
+            .about-image { order: -1; margin-bottom: 20px; }
+            .features-list { grid-template-columns: 1fr; }
+
             .feedback-container, .contact-wrapper, .tour-detail-content { grid-template-columns: 1fr; }
         }
     </style>
@@ -408,6 +473,7 @@
         <nav id="navbar">
             <ul>
                 <li><a href="#" onclick="navigate('home'); return false;" class="nav-link active">Home</a></li>
+                <li><a href="#" onclick="navigate('about'); return false;" class="nav-link">About</a></li>
                 <li><a href="#" onclick="navigate('tours'); return false;" class="nav-link">Tours</a></li>
                 <li><a href="#" onclick="navigate('gallery'); return false;" class="nav-link">Gallery</a></li>
                 <li><a href="#" onclick="navigate('feedback'); return false;" class="nav-link">Feedback</a></li>
@@ -419,34 +485,42 @@
     <!-- Main Content Area -->
     <main>
 
-        <!-- 1. HOME SECTION (NEW DESIGN) -->
+        <!-- 1. HOME SECTION -->
         <section id="home" class="active-section">
             <div class="hero">
                 <div class="hero-content">
                     <span class="hero-subtitle">Historical & Natural Wonder</span>
                     <h1>EXPLORE THE<br>ANCIENT PEAKS</h1>
                     <p>Journey to the top of massive rock formations where history and nature collide. Experience the ruins amidst the clouds.</p>
-                    
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="navigate('tours')">Book Your Trek</button>
-                        <button class="btn btn-outline" onclick="navigate('gallery')">View Gallery</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Home Intro (Fixed Arrangement) -->
-            <div class="home-intro">
-                <div class="container">
-                    <div class="section-title">
-                        <h2>Welcome to Namunukula</h2>
-                        <p>Your trusted partner for exploring hidden gems of Sri Lanka's hill country.</p>
-                    </div>
-                    <p>We specialize in personalized trekking experiences, cultural tours, and nature photography expeditions. Whether you are a solo traveler or a large family group, we tailor our services to meet your needs, ensuring safety, comfort, and memories that last a lifetime.</p>
                 </div>
             </div>
         </section>
 
-        <!-- 2. TOURS SECTION (PREVIOUS DESIGN) -->
+        <!-- 2. ABOUT SECTION -->
+        <section id="about">
+            <div class="container">
+                <div class="about-container">
+                    <div class="about-content">
+                        <h4>Who We Are</h4>
+                        <h2>Passionate Guides, Unforgettable Adventures</h2>
+                        <p>Founded in 2015, Namunukula Tour Guides was born from a deep love for the central highlands of Sri Lanka. We are not just a tour agency; we are a family of certified naturalists and historians dedicated to showcasing the hidden beauty of our island.</p>
+                        <p>We believe that travel should be transformative. Our goal is to take you off the beaten path to experience the authentic culture, breathtaking landscapes, and serene spirituality that defines this region.</p>
+                        
+                        <div class="features-list">
+                            <div class="feature-item"><i class="fa-solid fa-person-hiking"></i> Expert Local Guides</div>
+                            <div class="feature-item"><i class="fa-solid fa-leaf"></i> Eco-Friendly Tours</div>
+                            <div class="feature-item"><i class="fa-solid fa-camera"></i> Photography Expeditions</div>
+                            <div class="feature-item"><i class="fa-solid fa-heart-pulse"></i> Safety First Approach</div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://picsum.photos/seed/namunukulaabout/600/500" alt="Guides in nature">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. TOURS SECTION -->
         <section id="tours">
             <div class="container">
                 <div class="section-title fade-in">
@@ -459,7 +533,12 @@
                 </div>
 
                 <div id="tour-detail" class="tour-detail">
-                    <button class="btn btn-outline" style="border-color:var(--primary); color:var(--primary);" onclick="closeTourDetail()" style="margin-bottom: 20px;">&larr; Back to Tours</button>
+                    <!-- Back to Tours Button -->
+                    <div style="margin-bottom: 20px;">
+                        <button class="btn btn-outline" onclick="closeTourDetail()">
+                            <i class="fa-solid fa-arrow-left"></i> Back to Tours
+                        </button>
+                    </div>
                     <div id="tour-detail-content" class="tour-detail-content">
                         <!-- Detail content injected via JS -->
                     </div>
@@ -467,7 +546,7 @@
             </div>
         </section>
 
-        <!-- 3. GALLERY SECTION (PREVIOUS DESIGN) -->
+        <!-- 4. GALLERY SECTION -->
         <section id="gallery">
             <div class="container">
                 <div class="section-title fade-in">
@@ -481,7 +560,7 @@
             </div>
         </section>
 
-        <!-- 4. FEEDBACK SECTION (PREVIOUS DESIGN) -->
+        <!-- 5. FEEDBACK SECTION -->
         <section id="feedback">
             <div class="container">
                 <div class="section-title fade-in">
@@ -521,7 +600,8 @@
                                 <label>Comments</label>
                                 <textarea class="form-control" id="fbComment" rows="4" required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                            <!-- Beautiful Submit Button -->
+                            <button type="submit" class="btn btn-primary">Submit Review <i class="fa-solid fa-paper-plane"></i></button>
                         </form>
                     </div>
 
@@ -535,7 +615,7 @@
             </div>
         </section>
 
-        <!-- 5. CONTACT SECTION (PREVIOUS DESIGN) -->
+        <!-- 6. CONTACT SECTION -->
         <section id="contact">
             <div class="container">
                 <div class="section-title fade-in">
@@ -573,7 +653,8 @@
                             <div class="form-group"><label>Name</label><input type="text" class="form-control" required></div>
                             <div class="form-group"><label>Email</label><input type="email" class="form-control" required></div>
                             <div class="form-group"><label>Message</label><textarea class="form-control" rows="4" required></textarea></div>
-                            <button type="submit" class="btn btn-primary">Send Message</button>
+                            <!-- Contact Button (Reusing primary style) -->
+                            <button type="submit" class="btn btn-primary">Send Message <i class="fa-solid fa-envelope"></i></button>
                         </form>
                     </div>
                 </div>
@@ -615,7 +696,6 @@
                 id: 1,
                 title: "Namunukula Sunrise Trek",
                 desc: "A challenging yet rewarding early morning hike to the peak of Namunukula mountain to witness a breathtaking sunrise.",
-                price: "$45",
                 duration: "4 Hours",
                 image: "https://picsum.photos/seed/namu1/600/400",
                 details: "Includes guide, water bottles, and a light breakfast. Difficulty level: Moderate. Suitable for ages 12+."
@@ -624,7 +704,6 @@
                 id: 2,
                 title: "Tea Plantation Walk",
                 desc: "Stroll through lush green tea fields, learn about the tea-making process, and enjoy a fresh cup of Ceylon tea.",
-                price: "$25",
                 duration: "2 Hours",
                 image: "https://picsum.photos/seed/tea2/600/400",
                 details: "Includes factory tour entry fees and tea tasting session. Easy walking terrain."
@@ -633,7 +712,6 @@
                 id: 3,
                 title: "Dunhinda Waterfall Expedition",
                 desc: "Visit the most famous waterfall in the region. A scenic drive followed by a short hike to the base.",
-                price: "$35",
                 duration: "3 Hours",
                 image: "https://picsum.photos/seed/water3/600/400",
                 details: "Transportation included. Bring swimwear if you wish to dip in the natural pool."
@@ -704,16 +782,18 @@
             tours.forEach(tour => {
                 const card = document.createElement('div');
                 card.className = 'tour-card';
+                // Beautiful Button Design inserted here
                 card.innerHTML = `
                     <img src="${tour.image}" alt="${tour.title}" class="tour-img">
                     <div class="tour-info">
                         <div class="tour-meta">
                             <span><i class="fa-regular fa-clock"></i> ${tour.duration}</span>
-                            <span class="tour-price">${tour.price}</span>
                         </div>
                         <h3>${tour.title}</h3>
                         <p>${tour.desc}</p>
-                        <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" onclick="openTourDetail(${tour.id})">View Details</button>
+                        <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" onclick="openTourDetail(${tour.id})">
+                            View Details <i class="fa-solid fa-arrow-right"></i>
+                        </button>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -737,18 +817,10 @@
                 <div><img src="${tour.image}" style="width: 100%; border-radius: 10px; margin-bottom: 20px;"></div>
                 <div>
                     <h2 style="color: var(--primary-dark); margin-bottom: 10px;">${tour.title}</h2>
-                    <h4 style="color: var(--accent); margin-bottom: 20px;">${tour.price} | ${tour.duration}</h4>
+                    <h4 style="color: var(--accent); margin-bottom: 20px;">Duration: ${tour.duration}</h4>
+                    
                     <p style="margin-bottom: 20px;">${tour.desc}</p>
                     <p><strong>What's Included:</strong> ${tour.details}</p>
-                    <div class="booking-form">
-                        <h4>Book This Tour</h4>
-                        <form onsubmit="handleBooking(event)">
-                            <input type="hidden" value="${tour.title}">
-                            <div class="form-group"><label>Date</label><input type="date" class="form-control" required></div>
-                            <div class="form-group"><label>Number of People</label><input type="number" min="1" class="form-control" required></div>
-                            <button type="submit" class="btn btn-primary" style="width: 100%;">Request Booking</button>
-                        </form>
-                    </div>
                 </div>
             `;
             detailDiv.classList.add('active');
@@ -759,8 +831,6 @@
             document.getElementById('tour-detail').classList.remove('active');
             document.getElementById('tours-list').style.display = 'grid';
         }
-
-        function handleBooking(e) { e.preventDefault(); showToast('Booking Request Sent Successfully!'); }
 
         // =========================================
         // GALLERY LOGIC
