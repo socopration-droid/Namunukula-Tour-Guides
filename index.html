@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Namunukula Tour Guides</title>
+    <!-- Using Google Fonts for professional typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* =========================================
+           CSS VARIABLES & RESET
+           ========================================= */
+        :root {
+            --primary-color: #2E8B57; /* Sea Green */
+            --primary-dark: #1e5e3a;
+            --accent-color: #FFA500; /* Orange */
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #f9fdf9;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* =========================================
+           UTILITIES & ANIMATIONS
+           ========================================= */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 139, 87, 0.3);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        /* =========================================
+           HEADER & NAVIGATION
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* =========================================
+           SECTIONS STRUCTURE (SPA Logic)
+           ========================================= */
+        section {
+            padding: 100px 0 60px;
+            min-height: 100vh;
+            display: none; /* Hidden by default */
+        }
+
+        section.active-section {
+            display: block;
+        }
+
+        /* =========================================
+           HOME SECTION
+           ========================================= */
+        #home {
+            padding: 0;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://picsum.photos/seed/namunukula/1920/1080');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex; /* Overridden by JS toggle, but initial state needs to be visible usually */
+            display: none; 
+        }
+        
+        #home.active-section {
+            display: flex; /* Flex for hero centering */
+        }
+
+        .hero-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 20px;
+            margin-top: 60px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .home-intro {
+            background-color: var(--bg-light);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .home-intro p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* =========================================
+           TOURS SECTION
+           ========================================= */
+        .tours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .tour-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .tour-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .tour-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .tour-info {
+            padding: 20px;
+        }
+
+        .tour-info h3 {
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        .tour-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .tour-price {
+            font-weight: 700;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+
+        /* Tour Detail Modal/View */
+        .tour-detail {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: none; /* Hidden initially */
+        }
+
+        .tour-detail.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tour-detail-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .booking-form {
+            margin-top: 30px;
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        /* =========================================
+           GALLERY SECTION
+           ========================================= */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .admin-upload-area {
+            background: #e9ecef;
+            border: 2px dashed #adb5bd;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        /* =========================================
+           FEEDBACK SECTION
+           ========================================= */
+        .feedback-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .feedback-form {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.1);
+        }
+
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse; /* For CSS hover magic */
+            justify-content: flex-end;
+            gap: 5px;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 1.5rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: var(--accent-color);
+        }
+
+        .feedback-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .feedback-item {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .feedback-name {
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .feedback-tour {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            background: #eee;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* =========================================
+           CONTACT SECTION
+           ========================================= */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-info {
+            padding: 40px;
+            background: var(--primary-dark);
+            color: var(--white);
+        }
+
+        .contact-info h3 {
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-form-container {
+            padding: 40px;
+        }
+
+        .map-container {
+            margin-top: 30px;
+            height: 300px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* =========================================
+           ADMIN & MODALS
+           ========================================= */
+        .admin-login-box {
+            max-width: 400px;
+            margin: 50px auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 20px;
+                text-align: center;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+                transform: translateY(-150%);
+                transition: var(--transition);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .feedback-container, 
+            .contact-wrapper,
+            .tour-detail-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fa-solid fa-mountain-sun"></i> Namunukula
+                </div>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home" class="nav-item active" onclick="navigate('home')">Home</a></li>
+                    <li><a href="#tours" class="nav-item" onclick="navigate('tours')">Tours</a></li>
+                    <li><a href="#gallery" class="nav-item" onclick="navigate('gallery')">Gallery</a></li>
+                    <li><a href="#feedback" class="nav-item" onclick="navigate('feedback')">Feedback</a></li>
+                    <li><a href="#contact" class="nav-item" onclick="navigate('contact')">Contact</a></li>
+                    <li><a href="#" onclick="openAdminLogin()" style="color: var(--accent-color);">Admin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+
+        <!-- 1. HOME SECTION -->
+        <section id="home" class="active-section">
+            <div class="hero-content fade-in">
+                <h1>Discover the Beauty of Namunukula</h1>
+                <p>Experience breathtaking mountain views, lush tea plantations, and unforgettable adventures with our expert guides.</p>
+                <button class="btn" onclick="navigate('tours')">Explore Tours</button>
+                <button class="btn btn-outline" style="border-color: #fff; color: #fff; margin-left: 10px;" onclick="navigate('contact')">Contact Us</button>
+            </div>
+            
+            <div class="container home-intro">
+                <div class="section-title">
+                    <h2>Welcome to Namunukula</h2>
+                    <p>Your trusted partner for exploring the hidden gems of Sri Lanka's hill country.</p>
+                </div>
+                <p>We specialize in personalized trekking experiences, cultural tours, and nature photography expeditions. Whether you are a solo traveler or a large family group, we tailor our services to meet your needs, ensuring safety, comfort, and memories that last a lifetime.</p>
+            </div>
+        </section>
+
+        <!-- 2. TOURS SECTION -->
+        <section id="tours">
+            <div class="container">
+                <div class="section-title fade-in">
+                    <h2>Our Tours</h2>
+                    <p>Choose from our curated selection of adventures designed to showcase the best of the region.</p>
+                </div>
+
+                <!-- List View -->
+                <div id="tours-list" class="tours-grid fade-in">
+                    <!-- Tours injected via JS -->
+                </div>
+
+                <!-- Detail View (Hidden by default) -->
+                <div id="tour-detail" class="tour-detail">
+                    <button class="btn btn-outline" onclick="closeTourDetail()" style="margin-bottom: 20px;">&larr; Back to Tours</button>
+                    <div id="tour-detail-content" class="tour-detail-content">
+                        <!-- Detail content injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. GALLERY SECTION -->
+        <section id="gallery">
+            <div class="container">
+                <div class="section-title fade-in">
+                    <h2>Photo Gallery</h2>
+                    <p>Visual memories from our previous adventures. Captured by our guests and guides.</p>
+                </div>
+
+                <!-- Admin Upload Simulation (Only visible if "logged in") -->
+                <div id="admin-gallery-panel" class="admin-upload-area" style="display: none;">
+                    <i class="fa-solid fa-cloud-arrow-up" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 15px;"></i>
+                    <h3>Admin Upload</h3>
+                    <p>Click here to simulate uploading a new photo (will add a random image to the grid)</p>
+                    <button class="btn" style="margin-top: 15px;" onclick="adminUploadPhoto()">Upload New Photo</button>
+                </div>
+
+                <div id="gallery-grid" class="gallery-grid fade-in">
+                    <!-- Photos injected via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. FEEDBACK SECTION -->
+        <section id="feedback">
+            <div class="container">
+                <div class="section-title fade-in">
+                    <h2>Customer Feedback</h2>
+                    <p>See what our travelers have to say about their experiences.</p>
+                </div>
+
+                <div class="feedback-container fade-in">
+                    <!-- Form -->
+                    <div class="feedback-form">
+                        <h3>Leave a Review</h3>
+                        <form id="reviewForm" onsubmit="submitFeedback(event)">
+                            <div class="form-group">
+                                <label>Your Name</label>
+                                <input type="text" class="form-control" id="fbName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" class="form-control" id="fbEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Tour</label>
+                                <select class="form-control" id="fbTour">
+                                    <!-- Options filled by JS -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Rating</label>
+                                <div class="star-rating">
+                                    <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars">&#9733;</label>
+                                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars">&#9733;</label>
+                                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars">&#9733;</label>
+                                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars">&#9733;</label>
+                                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">&#9733;</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Comments</label>
+                                <textarea class="form-control" id="fbComment" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Submit Review</button>
+                        </form>
+                    </div>
+
+                    <!-- List -->
+                    <div class="feedback-list">
+                        <h3 style="margin-bottom: 20px;">Recent Reviews</h3>
+                        <div id="reviews-container">
+                            <!-- Reviews injected via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. CONTACT SECTION -->
+        <section id="contact">
+            <div class="container">
+                <div class="section-title fade-in">
+                    <h2>Contact Us</h2>
+                    <p>Get in touch to plan your next adventure or ask any questions.</p>
+                </div>
+
+                <div class="contact-wrapper fade-in">
+                    <div class="contact-info">
+                        <h3>Get in Touch</h3>
+                        <div class="contact-detail">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>123 Main Street, Badulla, Sri Lanka</span>
+                        </div>
+                        <div class="contact-detail">
+                            <i class="fa-solid fa-phone"></i>
+                            <span>+94 55 222 3333</span>
+                        </div>
+                        <div class="contact-detail">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>info@namunukula-tours.com</span>
+                        </div>
+                        
+                        <h3 style="margin-top: 30px;">Office Hours</h3>
+                        <p>Mon - Fri: 8:00 AM - 6:00 PM</p>
+                        <p>Sat - Sun: 9:00 AM - 4:00 PM</p>
+                    </div>
+
+                    <div class="contact-form-container">
+                        <form onsubmit="submitContact(event)">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Message</label>
+                                <textarea class="form-control" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Embedded Map (Placeholder) -->
+                <div class="map-container fade-in">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d252488.6343059573!2d80.957477!3d6.983281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae366266498acd3%3A0x411a3818a1e03c35!2sBadulla%2C%20Sri%20Lanka!5e0!3m2!1sen!2sus!4v1684345678901!5m2!1sen!2sus" 
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. ADMIN LOGIN & DASHBOARD -->
+        <section id="admin">
+            <div class="container">
+                <div class="admin-login-box fade-in">
+                    <h2>Admin Login</h2>
+                    <form onsubmit="handleAdminLogin(event)">
+                        <div class="form-group">
+                            <input type="text" id="adminUser" class="form-control" placeholder="Username (admin)" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="adminPass" class="form-control" placeholder="Password (admin123)" required>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%;">Login</button>
+                        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">(Demo: Use 'admin' / 'admin123')</p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: #222; color: #fff; padding: 40px 0; text-align: center;">
+        <div class="container">
+            <div class="logo" style="justify-content: center; margin-bottom: 20px; color: #fff;">
+                <i class="fa-solid fa-mountain-sun" style="color: var(--accent-color);"></i> Namunukula
+            </div>
+            <p>&copy; 2023 Namunukula Tour Guides. All rights reserved.</p>
+            <div style="margin-top: 20px; font-size: 1.2rem;">
+                <a href="#" style="margin: 0 10px;"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" style="margin: 0 10px;"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" style="margin: 0 10px;"><i class="fa-brands fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Element -->
+    <div id="toast" class="toast">Action Successful!</div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // =========================================
+        // DATA SIMULATION (Backend Replacement)
+        // =========================================
+        
+        // Initial Data for Tours
+        const initialTours = [
+            {
+                id: 1,
+                title: "Namunukula Sunrise Trek",
+                desc: "A challenging yet rewarding early morning hike to the peak of Namunukula mountain to witness a breathtaking sunrise.",
+                price: "$45",
+                duration: "4 Hours",
+                image: "https://picsum.photos/seed/namu1/600/400",
+                details: "Includes guide, water bottles, and a light breakfast. Difficulty level: Moderate. Suitable for ages 12+."
+            },
+            {
+                id: 2,
+                title: "Tea Plantation Walk",
+                desc: "Stroll through lush green tea fields, learn about the tea-making process, and enjoy a fresh cup of Ceylon tea.",
+                price: "$25",
+                duration: "2 Hours",
+                image: "https://picsum.photos/seed/tea2/600/400",
+                details: "Includes factory tour entry fees and tea tasting session. Easy walking terrain."
+            },
+            {
+                id: 3,
+                title: "Dunhinda Waterfall Expedition",
+                desc: "Visit the most famous waterfall in the region. A scenic drive followed by a short hike to the base.",
+                price: "$35",
+                duration: "3 Hours",
+                image: "https://picsum.photos/seed/water3/600/400",
+                details: "Transportation included. Bring swimwear if you wish to dip in the natural pool."
+            }
+        ];
+
+        // Initial Data for Gallery
+        const initialGallery = [
+            "https://picsum.photos/seed/gal1/400/400",
+            "https://picsum.photos/seed/gal2/400/400",
+            "https://picsum.photos/seed/gal3/400/400",
+            "https://picsum.photos/seed/gal4/400/400",
+            "https://picsum.photos/seed/gal5/400/400",
+            "https://picsum.photos/seed/gal6/400/400",
+            "https://picsum.photos/seed/gal7/400/400",
+            "https://picsum.photos/seed/gal8/400/400"
+        ];
+
+        // Initial Data for Feedback
+        const initialFeedback = [
+            {
+                name: "John Doe",
+                tour: "Namunukula Sunrise Trek",
+                rating: 5,
+                comment: "Absolutely stunning views! The guide was very knowledgeable and helpful."
+            },
+            {
+                name: "Sarah Smith",
+                tour: "Tea Plantation Walk",
+                rating: 4,
+                comment: "Very relaxing and informative. The tea was delicious!"
+            }
+        ];
+
+        // Load data from LocalStorage or use Initial Data
+        let tours = JSON.parse(localStorage.getItem('namunukula_tours')) || initialTours;
+        let gallery = JSON.parse(localStorage.getItem('namunukula_gallery')) || initialGallery;
+        let feedbacks = JSON.parse(localStorage.getItem('namunukula_feedbacks')) || initialFeedback;
+        let isAdmin = false; // Admin state
+
+        // Save Data Helper
+        function saveData() {
+            localStorage.setItem('namunukula_tours', JSON.stringify(tours));
+            localStorage.setItem('namunukula_gallery', JSON.stringify(gallery));
+            localStorage.setItem('namunukula_feedbacks', JSON.stringify(feedbacks));
+        }
+
+        // =========================================
+        // NAVIGATION & ROUTING
+        // =========================================
+
+        function navigate(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(sec => {
+                sec.classList.remove('active-section');
+            });
+            
+            // Remove active class from nav links
+            document.querySelectorAll('.nav-item').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Show target section
+            document.getElementById(sectionId).classList.add('active-section');
+            
+            // Highlight nav link
+            const activeLink = document.querySelector(`a[href="#${sectionId}"]`);
+            if(activeLink) activeLink.classList.add('active');
+
+            // Close mobile menu if open
+            document.querySelector('.nav-links').classList.remove('active');
+
+            // Scroll to top
+            window.scrollTo(0,0);
+        }
+
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+
+        // =========================================
+        // TOURS LOGIC
+        // =========================================
+
+        function renderTours() {
+            const grid = document.getElementById('tours-list');
+            const select = document.getElementById('fbTour');
+            grid.innerHTML = '';
+            select.innerHTML = '<option value="">Select a Tour...</option>';
+
+            tours.forEach(tour => {
+                // Render Card
+                const card = document.createElement('div');
+                card.className = 'tour-card';
+                card.innerHTML = `
+                    <img src="${tour.image}" alt="${tour.title}" class="tour-img">
+                    <div class="tour-info">
+                        <div class="tour-meta">
+                            <span><i class="fa-regular fa-clock"></i> ${tour.duration}</span>
+                            <span class="tour-price">${tour.price}</span>
+                        </div>
+                        <h3>${tour.title}</h3>
+                        <p>${tour.desc}</p>
+                        <button class="btn" style="margin-top: 15px; width: 100%;" onclick="openTourDetail(${tour.id})">View Details</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+
+                // Add to select dropdown
+                const option = document.createElement('option');
+                option.value = tour.title;
+                option.textContent = tour.title;
+                select.appendChild(option);
+            });
+        }
+
+        function openTourDetail(id) {
+            const tour = tours.find(t => t.id === id);
+            if(!tour) return;
+
+            document.getElementById('tours-list').style.display = 'none';
+            const detailDiv = document.getElementById('tour-detail');
+            const contentDiv = document.getElementById('tour-detail-content');
+            
+            contentDiv.innerHTML = `
+                <div>
+                    <img src="${tour.image}" style="width: 100%; border-radius: 10px; margin-bottom: 20px;">
+                </div>
+                <div>
+                    <h2 style="color: var(--primary-dark); margin-bottom: 10px;">${tour.title}</h2>
+                    <h4 style="color: var(--accent-color); margin-bottom: 20px;">${tour.price} | ${tour.duration}</h4>
+                    <p style="margin-bottom: 20px;">${tour.desc}</p>
+                    <p><strong>What's Included:</strong> ${tour.details}</p>
+                    
+                    <div class="booking-form">
+                        <h4>Book This Tour</h4>
+                        <form onsubmit="handleBooking(event)">
+                            <input type="hidden" value="${tour.title}">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="date" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Number of People</label>
+                                <input type="number" min="1" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn" style="width: 100%;">Request Booking</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            detailDiv.classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function closeTourDetail() {
+            document.getElementById('tour-detail').classList.remove('active');
+            document.getElementById('tours-list').style.display = 'grid'; // Restore grid display
+        }
+
+        function handleBooking(e) {
+            e.preventDefault();
+            showToast('Booking Request Sent Successfully!');
+            // In a real app, this sends data to PHP backend
+        }
+
+        // =========================================
+        // GALLERY LOGIC
+        // =========================================
+
+        function renderGallery() {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+
+            gallery.forEach(imgSrc => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${imgSrc}" alt="Gallery Photo">
+                    <div class="gallery-overlay">
+                        <i class="fa-solid fa-magnifying-glass-plus" style="color: white; font-size: 2rem;"></i>
+                    </div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function adminUploadPhoto() {
+            // Simulate upload by adding a random Picsum image
+            const randomSeed = Math.floor(Math.random() * 1000);
+            const newImg = `https://picsum.photos/seed/${randomSeed}/400/400`;
+            gallery.unshift(newImg); // Add to beginning
+            saveData();
+            renderGallery();
+            showToast('Photo Uploaded Successfully!');
+        }
+
+        // =========================================
+        // FEEDBACK LOGIC
+        // =========================================
+
+        function renderFeedbacks() {
+            const container = document.getElementById('reviews-container');
+            container.innerHTML = '';
+
+            feedbacks.forEach(fb => {
+                const item = document.createElement('div');
+                item.className = 'feedback-item';
+                
+                // Generate stars string
+                let starsHtml = '';
+                for(let i=0; i<5; i++) {
+                    if(i < fb.rating) starsHtml += '<span style="color:var(--accent-color)">&#9733;</span>';
+                    else starsHtml += '<span style="color:#ddd">&#9733;</span>';
+                }
+
+                item.innerHTML = `
+                    <div class="feedback-header">
+                        <span class="feedback-name">${fb.name}</span>
+                        <span class="feedback-tour">${fb.tour}</span>
+                    </div>
+                    <div style="margin-bottom: 10px;">${starsHtml}</div>
+                    <p style="font-style: italic; color: #555;">"${fb.comment}"</p>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function submitFeedback(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('fbName').value;
+            const tour = document.getElementById('fbTour').value;
+            const comment = document.getElementById('fbComment').value;
+            
+            // Get rating
+            const ratingInputs = document.getElementsByName('rating');
+            let rating = 0;
+            for(let input of ratingInputs) {
+                if(input.checked) rating = parseInt(input.value);
+            }
+
+            if(rating === 0) {
+                alert('Please select a star rating.');
+                return;
+            }
+
+            // Create feedback object
+            const newFeedback = { name, tour, rating, comment };
+            
+            // Add to array and save
+            feedbacks.unshift(newFeedback); // Add to top
+            saveData();
+            
+            // Re-render
+            renderFeedbacks();
+            
+            // Reset form
+            document.getElementById('reviewForm').reset();
+            showToast('Thank you for your feedback!');
+        }
+
+        // =========================================
+        // CONTACT LOGIC
+        // =========================================
+        function submitContact(e) {
+            e.preventDefault();
+            showToast('Message sent! We will contact you shortly.');
+            e.target.reset();
+        }
+
+        // =========================================
+        // ADMIN LOGIC
+        // =========================================
+
+        function openAdminLogin() {
+            if(isAdmin) {
+                // If already logged in, go to gallery (to show upload btn)
+                navigate('gallery');
+                showToast('Welcome back, Admin');
+            } else {
+                // Hide other sections temporarily to show login "page" or just scroll
+                // For SPA simplicity, let's just navigate to a hidden admin section or use a modal. 
+                // Here I'll use the dedicated #admin section defined in HTML.
+                navigate('admin');
+            }
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+
+            if(user === 'admin' && pass === 'admin123') {
+                isAdmin = true;
+                document.getElementById('admin-gallery-panel').style.display = 'block'; // Show upload feature
+                showToast('Login Successful');
+                navigate('gallery'); // Redirect to gallery where they can upload
+            } else {
+                alert('Invalid credentials. Try admin / admin123');
+            }
+        }
+
+        // =========================================
+        // UTILITIES
+        // =========================================
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // =========================================
+        // INITIALIZATION
+        // =========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTours();
+            renderGallery();
+            renderFeedbacks();
+            
+            // Handle Browser Back Button for SPA feel
+            window.addEventListener('popstate', () => {
+                // Simple logic to handle back button not fully implemented 
+                // for this specific simple hash-based SPA, but good practice.
+            });
+        });
+
+    </script>
+</body>
+</html>
